@@ -1,6 +1,6 @@
 #include "TouchScreen.h"
-// #include "arduino.h"
-#include "application.h"
+#include "arduino.h"
+// #include "application.h"
 
 namespace TouchScreen {
 void begin() {
