@@ -1,30 +1,33 @@
 #include "TouchScreen.h"
-#include "arduino.h"
+#include <stdint.h>
 
-void setup() {
-    Serial.begin(9600);
-    // TouchScreen::begin();
+#define YP A2 // must be an analog pin, use "An" notation!
+#define XM A3 // must be an analog pin, use "An" notation!
+#define YM A0 // can be a digital pin (8)
+#define XP A1 // can be a digital pin (9)
+
+TouchScreen ts = TouchScreen(XP, YP, XM, YM, 300);
+
+void setup(void) {
+    // Serial.begin(9600);
     pinMode(7, OUTPUT);
     digitalWrite(7, LOW);
 }
 
-void loop() {
-    int x = TouchScreen::readX();
-    int y = TouchScreen::readY();
+void loop(void) {
+    TSPoint p = ts.getPoint();
 
-    if (x > 0 && x < 1000) {
-        Serial.print("x: ");
-        Serial.print(x - 100);
+    if (p.z > ts.pressureThreshhold) {
+        digitalWrite(7, HIGH);
+        // Serial.print("X = ");
+        // Serial.print(p.x);
+        // Serial.print("\tY = ");
+        // Serial.print(p.y);
+        // Serial.print("\tPressure = ");
+        // Serial.println(p.z);
+    } else {
+        digitalWrite(7, LOW);
     }
 
-    if (y > 0 && y < 1000) {
-        Serial.print("y: ");
-        Serial.println(y - 130);
-    }
-
-    // digitalWrite(7, HIGH);
-    // delay(1000);
-    // digitalWrite(7, LOW);
-    // delay(1000);
     delay(100);
 }
